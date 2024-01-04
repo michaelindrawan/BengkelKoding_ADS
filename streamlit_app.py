@@ -99,7 +99,7 @@ X, y = smote.fit_resample(X, y)
 #Melakukan standardisasi pada dataset
 # X = scaler.fit_transform(X)
 # Membaca model yang telah di-train sebelumnya
-model = pickle.load(open("models/knn_model.pkl", 'rb'))
+model = pickle.load(open("models/rf_model.pkl", 'rb'))
 # Melakukan prediksi menggunakan model pada dataset yang telah di-preprocess
 y_pred = model.predict(X)
 accuracy = accuracy_score(y, y_pred)
