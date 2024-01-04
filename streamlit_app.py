@@ -1,9 +1,4 @@
 # Import library yang diperlukan
-import subprocess
-
-requirements_file = 'requirements.txt'
-
-subprocess.run(['python', '-m', 'pip', 'install', '-r', requirements_file], check=True)
 import itertools
 import pandas as pd
 import numpy as np
