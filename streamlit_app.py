@@ -91,7 +91,7 @@ y = df_clean['target']
 # Melakukan oversampling menggunakan SMOTE untuk menangani ketidakseimbangan kelas
 smote = SMOTE(random_state=42)
 X, y = smote.fit_resample(X, y)
-print(X.shape)
+print(f'Shape of the x is {X.shape}')
 # Membaca model yang telah di-train sebelumnya
 model = pickle.load(open("models/hungarian_model.pkl", 'rb'))
 # Melakukan prediksi menggunakan model pada dataset yang telah di-preprocess
