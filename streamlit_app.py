@@ -228,7 +228,6 @@ with tab1:
   if predict_btn:
     inputs = [[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak]]
     prediction = model.predict(inputs)[0]
-    prediction = int(min(4, max(0, prediction)))
 
     bar = st.progress(0)
     status_text = st.empty()
@@ -285,7 +284,6 @@ with tab2:
     result_arr = []
 
     for prediction in prediction_arr:
-      prediction = int(min(4, max(0, prediction)))
       if prediction == 0:
         result = "Healthy"
       elif prediction == 1:
