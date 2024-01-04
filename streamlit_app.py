@@ -95,7 +95,6 @@ X, y = smote.fit_resample(X, y)
 model = pickle.load(open("models/hungarian_model.pkl", 'rb'))
 # Melakukan prediksi menggunakan model pada dataset yang telah di-preprocess
 y_pred = model.predict(X)
-y_pred = int(max(0,min(4,y_pred[0])))
 accuracy = accuracy_score(y, y_pred)
 accuracy = round((accuracy * 100), 2)
 
