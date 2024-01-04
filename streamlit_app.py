@@ -1,4 +1,9 @@
 # Import library yang diperlukan
+import subprocess
+
+requirements_file = 'requirements.txt'
+
+subprocess.run(['python', '-m', 'pip', 'install', '-r', requirements_file], check=True)
 import itertools
 import pandas as pd
 import numpy as np
@@ -7,11 +12,7 @@ from sklearn.metrics import accuracy_score
 import streamlit as st
 import time
 import pickle
-import subprocess
 
-requirements_file = 'requirements.txt'
-
-subprocess.run(['python', '-m', 'pip', 'install', '-r', requirements_file], check=True)
 
 # Membaca data dari file "hungarian.data" dan memprosesnya menjadi DataFrame
 # dengan mengabaikan baris yang tidak memiliki 76 kolom
