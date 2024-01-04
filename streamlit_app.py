@@ -283,7 +283,7 @@ with tab2:
     result_arr = []
 
     for prediction in prediction_arr:
-        prediction = int(min(4, max(0, prediction)))
+      prediction = int(min(4, max(0, prediction)))
       if prediction == 0:
         result = "Healthy"
       elif prediction == 1:
