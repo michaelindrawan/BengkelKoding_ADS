@@ -1,3 +1,4 @@
+# Import library yang diperlukan
 import itertools
 import pandas as pd
 import numpy as np
@@ -6,7 +7,8 @@ from sklearn.metrics import accuracy_score
 import streamlit as st
 import time
 import pickle
-
+# Membaca data dari file "hungarian.data" dan memprosesnya menjadi DataFrame
+# dengan mengabaikan baris yang tidak memiliki 76 kolom
 with open("data/hungarian.data", encoding='Latin1') as file:
   lines = [line.strip() for line in file]
 
@@ -16,15 +18,15 @@ data = itertools.takewhile(
 )
 
 df = pd.DataFrame.from_records(data)
-
+# Menghilangkan kolom pertama dan mengonversi nilai-nilai dalam DataFrame menjadi float
 df = df.iloc[:, :-1]
 df = df.drop(df.columns[0], axis=1)
 df = df.astype(float)
-
+# Mengganti nilai -9.0 dengan NaN dan memilih kolom-kolom yang relevan
 df.replace(-9.0, np.NaN, inplace=True)
 
 df_selected = df.iloc[:, [1, 2, 7, 8, 10, 14, 17, 30, 36, 38, 39, 42, 49, 56]]
-
+# Memberi nama kolom sesuai dengan mapping yang telah ditentukan
 column_mapping = {
   2: 'age',
   3: 'sex',
@@ -43,10 +45,12 @@ column_mapping = {
 }
 
 df_selected.rename(columns=column_mapping, inplace=True)
-
+# Menghapus kolom yang tidak diperlukan
 columns_to_drop = ['ca', 'slope','thal']
 df_selected = df_selected.drop(columns_to_drop, axis=1)
 
+# Mengisi nilai-nilai NaN dengan nilai rata-rata dari kolom yang bersangkutan
+# dan menghapus duplikat baris
 meanTBPS = df_selected['trestbps'].dropna()
 meanChol = df_selected['chol'].dropna()
 meanfbs = df_selected['fbs'].dropna()
@@ -82,12 +86,12 @@ df_clean.drop_duplicates(inplace=True)
 
 X = df_clean.drop("target", axis=1)
 y = df_clean['target']
-
+# Melakukan oversampling menggunakan SMOTE untuk menangani ketidakseimbangan kelas
 smote = SMOTE(random_state=42)
 X, y = smote.fit_resample(X, y)
-
+# Membaca model yang telah di-train sebelumnya
 model = pickle.load(open("models/hungarian_model.pkl", 'rb'))
-
+# Melakukan prediksi menggunakan model pada dataset yang telah di-preprocess
 y_pred = model.predict(X)
 accuracy = accuracy_score(y, y_pred)
 accuracy = round((accuracy * 100), 2)
@@ -98,6 +102,7 @@ df_final['target'] = y
 # ========================================================================================================================================================================================
 
 # STREAMLIT
+# Menampilkan informasi menggunakan Streamlit
 st.set_page_config(
   page_title = "Hungarian Heart Disease",
   page_icon = ":heart:"
@@ -106,9 +111,9 @@ st.set_page_config(
 st.title("Hungarian Heart Disease")
 st.write(f"**_Model's Accuracy_** :  :green[**{accuracy}**]% (:red[_Do not copy outright_])")
 st.write("")
-
+# Membuat tampilan dengan dua tab, "Single-predict" dan "Multi-predict"
 tab1, tab2 = st.tabs(["Single-predict", "Multi-predict"])
-
+# Implementasi UI untuk tab "Single-predict"
 with tab1:
   st.sidebar.header("**User Input** Sidebar")
 
@@ -234,7 +239,7 @@ with tab1:
         time.sleep(1)
         status_text.empty()
         bar.empty()
-
+# Menampilkan hasil prediksi untuk data tunggal
     if prediction == 0:
       result = ":green[**Healthy**]"
     elif prediction == 1:
@@ -250,7 +255,7 @@ with tab1:
   st.write("")
   st.subheader("Prediction:")
   st.subheader(result)
-
+ # Implementasi UI untuk tab "Multi-predict"
 with tab2:
   st.header("Predict multiple data:")
 
@@ -292,7 +297,7 @@ with tab2:
       result_arr.append(result)
 
     uploaded_result = pd.DataFrame({'Prediction Result': result_arr})
-
+# Menampilkan hasil prediksi untuk data multi (upload CSV)
     for i in range(70, 101):
       status_text.text(f"{i}% complete")
       bar.progress(i)
