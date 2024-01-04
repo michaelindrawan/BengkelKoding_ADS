@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import StandardScaler
 import streamlit as st
 import time
 import pickle
@@ -86,8 +87,12 @@ fill_values = {
 df_clean = df_selected.fillna(value=fill_values)
 df_clean.drop_duplicates(inplace=True)
 
+scaler = StandardScaler()
+
 X = df_clean.drop("target", axis=1)
 y = df_clean['target']
+#Melakukan standardisasi pada dataset
+X = scaler.fit_transform(X)
 # Melakukan oversampling menggunakan SMOTE untuk menangani ketidakseimbangan kelas
 smote = SMOTE(random_state=42)
 X, y = smote.fit_resample(X, y)
