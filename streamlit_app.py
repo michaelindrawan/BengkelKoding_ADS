@@ -92,7 +92,7 @@ y = df_clean['target']
 smote = SMOTE(random_state=42)
 X, y = smote.fit_resample(X, y)
 # Membaca model yang telah di-train sebelumnya
-model = pickle.load(open("models/hungarian_model.pkl", 'rb'))
+model = pickle.load(open("models/xgb_model.pkl", 'rb'))
 # Melakukan prediksi menggunakan model pada dataset yang telah di-preprocess
 y_pred = model.predict(X)
 accuracy = accuracy_score(y, y_pred)
